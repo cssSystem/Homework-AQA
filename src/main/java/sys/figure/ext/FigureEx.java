@@ -2,7 +2,7 @@ package sys.figure.ext;
 
 import sys.figure.inter.Figure;
 
-public class FigureEx implements Figure {
+public abstract class FigureEx implements Figure {
     protected float[] sizes;
     protected String color;
     protected String colorBorder;
