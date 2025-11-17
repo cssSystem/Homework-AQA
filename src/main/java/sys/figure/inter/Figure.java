@@ -31,9 +31,12 @@ public interface Figure {
         }
         switch (sizes.length) {
             case 3:
-                float s = (sizes[0] + sizes[1] + sizes[2]) / 2;
-                float h = (float) Math.sqrt(s * (s - sizes[0]) * (s - sizes[1]) * (s - sizes[2]));
-                return 0.5f * sizes[0] * h;
+                if (sizes[0] + sizes[1] <= sizes[2] || sizes[0] + sizes[2] <= sizes[1] || sizes[1] + sizes[2] <= sizes[0] ||
+                        sizes[0] <= 0 || sizes[1] <= 0 || sizes[2] <= 0) {
+                    return 0;
+                }
+                float s = (sizes[0] + sizes[1] + sizes[2]) / 2.0f;
+                return (float) Math.sqrt(s * (s - sizes[0]) * (s - sizes[1]) * (s - sizes[2]));
             case 2:
                 return sizes[0] * sizes[1];
             case 1:
