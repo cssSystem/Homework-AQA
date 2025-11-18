@@ -1,77 +1,37 @@
 package sys;
 
 
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import jdk.jfr.Description;
+import org.testng.annotations.Test;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertThrows;
 
 public class ArithmeticOperationsTest {
-    @DisplayName("Plus Positive")
-    @ParameterizedTest
-    @CsvSource({
-            "0,1,1",
-            "1,0,1",
-            "1,1,2",
-            "-1,1,0",
-            "1,-1,0",
-            "-1,-1,-2",
-            "0,0,0"
-    })
+    @Description("Plus Positive")
+    @Test(dataProvider = "plusTestData", dataProviderClass = ArithmeticOperationsTestDataProvider.class)
     public void plusTest(int a, int b, int expected) {
         assertEquals(expected, ArithmeticOperations.plus(a, b));
     }
 
-    @DisplayName("Sub Positive")
-    @ParameterizedTest
-    @CsvSource({
-            "0,1,-1",
-            "1,0,1",
-            "1,1,0",
-            "-1,1,-2",
-            "1,-1,2",
-            "-1,-1,0",
-            "0,0,0"
-    })
+    @Description("Sub Positive")
+    @Test(dataProvider = "subTestData", dataProviderClass = ArithmeticOperationsTestDataProvider.class)
     public void subTest(int a, int b, int expected) {
         assertEquals(expected, ArithmeticOperations.sub(a, b));
     }
 
-    @DisplayName("Multi Positive")
-    @ParameterizedTest
-    @CsvSource({
-            "0,1,0",
-            "1,0,0",
-            "1,1,1",
-            "-1,1,-1",
-            "1,-1,-1",
-            "-1,-1,1",
-            "0,0,0"
-    })
+    @Description("Multi Positive")
+    @Test(dataProvider = "multiTestData", dataProviderClass = ArithmeticOperationsTestDataProvider.class)
     public void multiTest(int a, int b, int expected) {
         assertEquals(expected, ArithmeticOperations.multi(a, b));
     }
 
-    @DisplayName("Div Positive")
-    @ParameterizedTest
-    @CsvSource({
-            "0,1,0",
-            "1,1,1",
-            "2,2,1",
-            "-2,2,-1",
-            "-2,-2,1",
-            "3,2,1",
-            "-3,2,-1",
-            "-3,-2,1"
-    })
+    @Description("Div Positive")
+    @Test(dataProvider = "divTestData", dataProviderClass = ArithmeticOperationsTestDataProvider.class)
     public void divTest(int a, int b, int expected) {
         assertEquals(expected, ArithmeticOperations.div(a, b));
     }
 
-    @DisplayName("Div Negative")
+    @Description("Div Negative")
     @Test
     public void divTestNegative() {
         int a = 3;
