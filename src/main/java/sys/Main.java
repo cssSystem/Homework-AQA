@@ -2,7 +2,7 @@ package sys;
 
 import java.util.Arrays;
 
-import static sys.lesson_2.*;
+import static sys.Lesson2.*;
 
 public class Main {
     public static void main(String[] args) {

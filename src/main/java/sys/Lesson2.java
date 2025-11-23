@@ -1,6 +1,6 @@
 package sys;
 
-public class lesson_2 {
+public class Lesson2 {
     public static void printThreeWords() {
         System.out.println("Orange\nBanana\nApple");
     }
