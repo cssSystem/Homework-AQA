@@ -13,10 +13,6 @@ public class PageOnlineReplenishmentBlock extends PageEx {
         super(driver, url);
     }
 
-    public PageOnlineReplenishmentBlock(WebDriver driver) {
-        super(driver);
-    }
-
     public String linkClickToUrl(String linkText) {
         if (linkText == null || linkText.isEmpty()) {
             return null;
@@ -58,12 +54,11 @@ public class PageOnlineReplenishmentBlock extends PageEx {
 
 
     public void click(String xPath) {
-        this.waitElem(10, xPath);
-        driver.findElement(By.xpath(xPath)).click();
+       element(xPath).click();
     }
 
     public void switchFrame(String xPath) {
-        this.waitElem(10, xPath);
+        element(xPath);
 
         driver.switchTo().frame(driver.findElement(By.xpath(xPath)));
 
