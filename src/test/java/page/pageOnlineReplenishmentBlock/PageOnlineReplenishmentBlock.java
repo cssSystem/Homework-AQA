@@ -1,9 +1,12 @@
+package page.pageOnlineReplenishmentBlock;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import page.def.PageEx;
 
 import java.time.Duration;
 import java.util.List;
@@ -13,9 +16,7 @@ public class PageOnlineReplenishmentBlock extends PageEx {
         super(driver, url);
     }
 
-    public PageOnlineReplenishmentBlock(WebDriver driver) {
-        super(driver);
-    }
+
 
     public String linkClickToUrl(String linkText) {
         if (linkText == null || linkText.isEmpty()) {
@@ -58,12 +59,11 @@ public class PageOnlineReplenishmentBlock extends PageEx {
 
 
     public void click(String xPath) {
-        this.waitElem(10, xPath);
-        driver.findElement(By.xpath(xPath)).click();
+       element(xPath).click();
     }
 
     public void switchFrame(String xPath) {
-        this.waitElem(10, xPath);
+        element(xPath);
 
         driver.switchTo().frame(driver.findElement(By.xpath(xPath)));
 

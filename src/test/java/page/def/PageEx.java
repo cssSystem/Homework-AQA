@@ -1,3 +1,5 @@
+package page.def;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -9,22 +11,18 @@ import java.time.Duration;
 public class PageEx {
     protected WebDriver driver;
     protected String url;
-    protected WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 
     public PageEx(WebDriver driver, String url) {
         this.driver = driver;
         setUrl(url);
     }
 
-    public PageEx(WebDriver driver) {
-        this.driver = driver;
+    public String getText(String xPath) {
+        return element(xPath).getText();
     }
 
-    public String getText(String xPath) {
-        return driver.findElement(By.xpath(xPath)).getText();
-    }
     public String getAttr(String xPath, String attrName) {
-        return driver.findElement(By.xpath(xPath)).getAttribute(attrName);
+        return element(xPath).getAttribute(attrName);
     }
 
     public boolean isElementEmpty(String xpath) {
@@ -41,7 +39,7 @@ public class PageEx {
         driver.get(url);
     }
 
-    public String getUrl(){
+    public String getUrl() {
         return driver.getCurrentUrl();
     }
 
@@ -53,11 +51,20 @@ public class PageEx {
         driver.quit();
     }
 
-    public void waitElem(int duration, String xPath){
+    public void element(int duration, String xPath) {
         new WebDriverWait(driver, Duration.ofSeconds(duration))
                 .until(
                         ExpectedConditions.presenceOfElementLocated(By.xpath(xPath))
                 );
 
+    }
+    public WebElement element(String xPath) {
+        int duration = 10;
+        element(duration, xPath);
+        return driver.findElement(By.xpath(xPath));
+    }
+
+    public WebDriver getDriver() {
+        return driver;
     }
 }
