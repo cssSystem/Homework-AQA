@@ -1,6 +1,7 @@
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
@@ -19,8 +20,11 @@ public class PageEx {
         this.driver = driver;
     }
 
-    public String getText(String xpath) {
-        return driver.findElement(By.xpath(xpath)).getText();
+    public String getText(String xPath) {
+        return driver.findElement(By.xpath(xPath)).getText();
+    }
+    public String getAttr(String xPath, String attrName) {
+        return driver.findElement(By.xpath(xPath)).getAttribute(attrName);
     }
 
     public boolean isElementEmpty(String xpath) {
@@ -47,5 +51,13 @@ public class PageEx {
 
     public void quit() {
         driver.quit();
+    }
+
+    public void waitElem(int duration, String xPath){
+        new WebDriverWait(driver, Duration.ofSeconds(duration))
+                .until(
+                        ExpectedConditions.presenceOfElementLocated(By.xpath(xPath))
+                );
+
     }
 }
