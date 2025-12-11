@@ -33,6 +33,14 @@ public class Main {
         student.addSubjectGrade("Право", 2);
         students.add(student);
 
+        student = new Student("Мифодий", "NTL", 2);
+        student.addSubjectGrade("История", 5);
+        student.addSubjectGrade("Математика", 2);
+        student.addSubjectGrade("Геометрия", 3);
+        student.addSubjectGrade("Информатика", 4);
+        student.addSubjectGrade("Право", 5);
+        students.add(student);
+
         Student.printStudents(students, 3);
         System.out.println(students.size());
         Student.deleteStudent(students, 3);
