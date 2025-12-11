@@ -4,15 +4,17 @@ import sys.exc.MyArrayDataException;
 import sys.exc.MyArraySizeException;
 
 public class ArrayTruble {
+
     public static void ArrayTruble(String[][] arr) throws MyArraySizeException, MyArrayDataException {
         if (arr.length > 4) {
-            throw new MyArraySizeException();
-        } else if (arr[0].length > 4) {
             throw new MyArraySizeException();
         }
         int summ = 0;
         for (int i = 0; i < arr.length; i++) {
             for (int j = 0; j < arr[i].length; j++) {
+                if (arr[i].length > 4) {
+                    throw new MyArraySizeException();
+                }
                 try {
                     summ += Integer.parseInt(arr[i][j]);
                 } catch (NumberFormatException e) {
@@ -24,11 +26,18 @@ public class ArrayTruble {
         System.out.println(summ);
     }
 
-    public static void ArrayIndexTruble(String[][] arr) {
+    public static String ArrayIndexTruble(String[][] arr, int i, int j) {
         try {
-            var a = arr[arr.length];
+            return arr[i][j];
         } catch (ArrayIndexOutOfBoundsException e) {
-            e.printStackTrace();
+            System.err.println();
+            System.err.println(e.getClass().getSimpleName() + ": " +
+                    "Выход за пределы массива: " +
+                    "в массиве отсутствует ячейка с индексом | " + i + " x " + j + " |");
+            for (StackTraceElement elem : e.getStackTrace()) {
+                System.err.println(" в " + elem);
+            }
+            return null;
         }
     }
 }
