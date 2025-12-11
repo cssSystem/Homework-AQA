@@ -1,28 +1,48 @@
 package sys;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class Main {
     public static void main(String[] args) {
 
-        // Задание 1
-//        Set<Student> students = new HashSet<>();
-//
-//        students.add(new Student("Вася", "1IT", 1, 4.5f));
-//        students.add(new Student("Лиза", "2IT", 3, 3.5f));
-//        students.add(new Student("Кирил", "1IT", 4, 2.5f));
-//        students.add(new Student("Афдосия", "1DiG", 3, 1.5f));
-//        students.add(new Student("Вахтанг", "Per1_it", 2, 4.5f));
-//
-//
-//        Student.printStudents(students, 3);
-//        System.out.println(students.size());
-//        Student.deleteStudent(students, 3);
-//        Student.printStudents(students, 3);
-//        System.out.println(students.size());
-//        Student.nextCurse(students, 3);
-//        Student.printStudents(students, 4);
-//        System.out.println(students.size());
+        System.out.println("Задание 1");
+        Set<Student> students = new HashSet<>();
 
-        // Задание 2
+        var student = new Student("Вася", "1IT", 3);
+        student.addSubjectGrade("Математика", 5);
+        student.addSubjectGrade("Математика", 4);
+        student.addSubjectGrade("Математика", 3);
+        student.addSubjectGrade("Математика", 2);
+        student.addSubjectGrade("Математика", 1);
+        students.add(student);
+
+        student = new Student("Лиза", "1IT", 3);
+        student.addSubjectGrade("Математика", 5);
+        student.addSubjectGrade("Математика", 4);
+        student.addSubjectGrade("Математика", 3);
+        student.addSubjectGrade("Математика", 4);
+        student.addSubjectGrade("Математика", 5);
+        students.add(student);
+
+        student = new Student("Кирил", "2IT", 3);
+        student.addSubjectGrade("История", 2);
+        student.addSubjectGrade("Математика", 2);
+        student.addSubjectGrade("Геометрия", 3);
+        student.addSubjectGrade("Информатика", 4);
+        student.addSubjectGrade("Право", 2);
+        students.add(student);
+
+        Student.printStudents(students, 3);
+        System.out.println(students.size());
+        Student.deleteStudent(students, 3);
+        Student.printStudents(students, 3);
+        System.out.println(students.size());
+        Student.nextCurse(students, 3);
+        Student.printStudents(students, 4);
+        System.out.println(students.size());
+
+        System.out.println("\nЗадание 2");
         var list = new DirectoryOfTelephoneNumbers();
         list.add("Вася", "89111111111");
         list.add("Вася", "89222222222");
