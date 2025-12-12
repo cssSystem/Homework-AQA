@@ -46,7 +46,7 @@ public class Main {
         Student.deleteStudent(students, 3);
         Student.printStudents(students, 3);
         System.out.println(students.size());
-        Student.nextCurse(students, 3);
+        Student.nextCourse(students, 3);
         Student.printStudents(students, 4);
         System.out.println(students.size());
 
@@ -59,8 +59,5 @@ public class Main {
         list.add("Мася", "89555555555");
 
         System.out.println(list.get("Вася"));
-
     }
-
-
 }
