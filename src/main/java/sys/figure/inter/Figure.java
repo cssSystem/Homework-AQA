@@ -18,9 +18,6 @@ public interface Figure {
             case 1:
                 return 2 * (float) Math.PI * sizes[0];
         }
-        //квадрат P = (a+b)*2
-        //треугольник P = a+b+c
-        //круг P = 2*Math.PI*r
         return 0;
     }
 
@@ -42,9 +39,6 @@ public interface Figure {
             case 1:
                 return (float) Math.pow(Math.PI * sizes[0], 2);
         }
-        //квадрат S = а × b
-        //треугольник S = 0,5 × l × h
-        //круг S = Math.pow(Math.PI*r,2)
         return 0;
     }
 }

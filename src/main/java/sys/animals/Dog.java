@@ -42,5 +42,4 @@ public class Dog extends Animal {
         }
         super.sail(leng);
     }
-
 }

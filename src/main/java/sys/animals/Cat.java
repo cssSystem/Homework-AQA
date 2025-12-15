@@ -20,7 +20,6 @@ public class Cat extends Animal {
         count++;
     }
 
-
     @Override
     public void run(int leng) {
         if (leng < 0) {
