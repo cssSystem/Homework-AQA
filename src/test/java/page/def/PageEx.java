@@ -29,11 +29,6 @@ public class PageEx {
         return driver.findElements(By.xpath(xpath)).isEmpty();
     }
 
-    public WebElement linkElement(String text) {
-        return driver.findElement(By.linkText(text));
-    }
-
-
     public void setUrl(String url) {
         this.url = url;
         driver.get(url);
@@ -51,17 +46,17 @@ public class PageEx {
         driver.quit();
     }
 
-    public void element(int duration, String xPath) {
-        new WebDriverWait(driver, Duration.ofSeconds(duration))
+    public WebElement element(int duration, String xPath) {
+        return new WebDriverWait(driver, Duration.ofSeconds(duration))
                 .until(
                         ExpectedConditions.presenceOfElementLocated(By.xpath(xPath))
                 );
 
     }
+
     public WebElement element(String xPath) {
         int duration = 10;
-        element(duration, xPath);
-        return driver.findElement(By.xpath(xPath));
+        return element(duration, xPath);
     }
 
     public WebDriver getDriver() {

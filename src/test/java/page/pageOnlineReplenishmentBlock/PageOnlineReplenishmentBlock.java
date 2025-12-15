@@ -16,13 +16,11 @@ public class PageOnlineReplenishmentBlock extends PageEx {
         super(driver, url);
     }
 
-
-
-    public String linkClickToUrl(String linkText) {
-        if (linkText == null || linkText.isEmpty()) {
+    public String linkClickToUrl(String xPatch) {
+        if (xPatch == null || xPatch.isEmpty()) {
             return null;
         }
-        linkElement(linkText).click();
+        element(xPatch).click();
         var url = this.getUrl();
         setUrl(this.url);
         return url;
@@ -59,14 +57,14 @@ public class PageOnlineReplenishmentBlock extends PageEx {
 
 
     public void click(String xPath) {
-       element(xPath).click();
+        element(xPath);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.elementToBeClickable(By.xpath(xPath))).click();
     }
 
     public void switchFrame(String xPath) {
         element(xPath);
-
         driver.switchTo().frame(driver.findElement(By.xpath(xPath)));
-
         try {
             Thread.sleep(2000);
         } catch (InterruptedException e) {
@@ -76,5 +74,14 @@ public class PageOnlineReplenishmentBlock extends PageEx {
 
     public void exitFrame() {
         driver.switchTo().defaultContent();
+    }
+
+    public void clickChooseService(int i) {
+        String baseXpath = "//*[@id='pay-section']/div/div/div[2]/section/div/div[1]/div[1]/div[2]/";
+        click(baseXpath + "button/span[2]");
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.attributeContains(By.cssSelector("ul.select__list"), "style", "height: auto"));
+        click(baseXpath + "ul/li[" + i + "]");
+        wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("ul.select__list")));
     }
 }
