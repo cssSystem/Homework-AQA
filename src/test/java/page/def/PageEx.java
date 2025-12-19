@@ -9,8 +9,10 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 
 public class PageEx {
-    protected WebDriver driver;
-    protected String url;
+
+    private final WebDriver driver;
+    private String baseUrl;
+    private int durationBase = 10;
 
     public PageEx(WebDriver driver, String url) {
         this.driver = driver;
@@ -19,6 +21,18 @@ public class PageEx {
 
     public String getText(String xPath) {
         return element(xPath).getText();
+    }
+
+    public boolean getTextTimeOut(String xPath, String exp) {
+        return new WebDriverWait(driver, Duration.ofSeconds(durationBase)).until(
+                ExpectedConditions.textToBe(By.xpath(xPath), exp)
+        );
+    }
+
+    public boolean getTextContainsTimeOut(String xPath, String exp) {
+        return new WebDriverWait(driver, Duration.ofSeconds(durationBase)).until(
+                ExpectedConditions.textToBePresentInElement(element(xPath), exp)
+        );
     }
 
     public String getAttr(String xPath, String attrName) {
@@ -30,12 +44,16 @@ public class PageEx {
     }
 
     public void setUrl(String url) {
-        this.url = url;
+        this.baseUrl = url;
         driver.get(url);
     }
 
     public String getUrl() {
         return driver.getCurrentUrl();
+    }
+
+    public String getBaseUrl() {
+        return baseUrl;
     }
 
     public void maximize() {
@@ -51,7 +69,6 @@ public class PageEx {
                 .until(
                         ExpectedConditions.presenceOfElementLocated(By.xpath(xPath))
                 );
-
     }
 
     public WebElement element(String xPath) {
@@ -59,7 +76,25 @@ public class PageEx {
         return element(duration, xPath);
     }
 
+    public void switchFrame(String xPath) {
+        element(xPath);
+        driver.switchTo().frame(driver.findElement(By.xpath(xPath)));
+    }
+
     public WebDriver getDriver() {
         return driver;
+    }
+
+    public void elementClickInvisibleLocated(String xPath) {
+        element(xPath).click();
+        new WebDriverWait(driver, Duration.ofSeconds(durationBase)).until(
+                ExpectedConditions.invisibilityOfElementLocated(By.xpath(xPath))
+        );
+    }
+
+    public void elementSendKeys(String xpath, String text) {
+        var elem = element(xpath);
+        elem.click();
+        elem.sendKeys(text);
     }
 }

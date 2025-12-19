@@ -1,17 +1,16 @@
 package page.pageOnlineReplenishmentBlock;
 
+import io.qameta.allure.Allure;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import page.def.PageEx;
 
 import java.time.Duration;
-import java.util.List;
 
 public class PageOnlineReplenishmentBlock extends PageEx {
+
     public PageOnlineReplenishmentBlock(WebDriver driver, String url) {
         super(driver, url);
     }
@@ -22,66 +21,37 @@ public class PageOnlineReplenishmentBlock extends PageEx {
         }
         element(xPatch).click();
         var url = this.getUrl();
-        setUrl(this.url);
+        setUrl(this.getBaseUrl());
         return url;
     }
 
-    public void cookieOk() {
-        List<WebElement> link = driver.findElements(By.xpath("//*[@id='cookie-agree']"));
-        if (!link.isEmpty() && link.get(0).isDisplayed()) {
-            link.get(0).click();
-        }
-        new WebDriverWait(driver, Duration.ofSeconds(15)).until(
-                ExpectedConditions.invisibilityOfElementLocated(By.xpath("//*[@id='cookie-agree']"))
+    public void clickChooseService(int i) {
+        String baseXpath = "//section[contains(@class, 'pay')]//*[contains(@class, 'select__wrapper')]/";
+        element(baseXpath + "button/span[2]").click();
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.attributeContains(
+                By.cssSelector("ul.select__list"), "style", "height: auto")
         );
+        element(baseXpath + "ul/li[" + i + "]").click();
+        wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("ul.select__list")));
     }
 
-    public void formCommServ(String nomberTel, String sum) {
+    public void formCommServ(String numberTel, String sum) {
         var xPhone = "//*[@id='connection-phone']";
         var xSum = "//*[@id='connection-sum']";
         var xButton = "//*[@id='pay-connection']/button";
 
-        new WebDriverWait(driver, Duration.ofSeconds(15)).until(
-                ExpectedConditions.invisibilityOfElementLocated(By.xpath("//*[@id='pay-section']/div/div/div[2]/section/div/div[1]/div[1]/div[2]/ul"))
-        );
-
-        new Actions(driver)
-                .click(driver.findElement(By.xpath(xPhone)))
-                .sendKeys(nomberTel)
-                .click(driver.findElement(By.xpath(xSum)))
-                .sendKeys(sum)
-                .click(driver.findElement(By.xpath(xButton)))
-                .perform();
-
+        clickChooseService(1);
+        Allure.step("Заполнение поля номера телефона значением: " + numberTel);
+        elementSendKeys(xPhone, numberTel);
+        Allure.step("Заполнение поля суммы значением: " + sum);
+        elementSendKeys(xSum, sum);
+        Allure.step("Нажатие на кнопку <<Оплатить>>");
+        element(xButton).click();
     }
 
-
-    public void click(String xPath) {
-        element(xPath);
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        wait.until(ExpectedConditions.elementToBeClickable(By.xpath(xPath))).click();
-    }
-
-    public void switchFrame(String xPath) {
-        element(xPath);
-        driver.switchTo().frame(driver.findElement(By.xpath(xPath)));
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-//            throw new RuntimeException(e);
-        }
-    }
-
-    public void exitFrame() {
-        driver.switchTo().defaultContent();
-    }
-
-    public void clickChooseService(int i) {
-        String baseXpath = "//*[@id='pay-section']/div/div/div[2]/section/div/div[1]/div[1]/div[2]/";
-        click(baseXpath + "button/span[2]");
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
-        wait.until(ExpectedConditions.attributeContains(By.cssSelector("ul.select__list"), "style", "height: auto"));
-        click(baseXpath + "ul/li[" + i + "]");
-        wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("ul.select__list")));
+    public void cookieOk() {
+        var xPathCookie = "//*[@id='cookie-agree']";
+        elementClickInvisibleLocated(xPathCookie);
     }
 }
