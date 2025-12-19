@@ -17,12 +17,11 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.nullValue;
 
-public class PostmanEchoRequestMethods {
-    static Map<String, String> headersMap = new HashMap<>();
+public class TestPostmanEchoRequestMethods {
 
+    static Map<String, String> headersMap = new HashMap<>();
     static String baseProtocol = "https";
     static String hostData = "postman-echo.com";
-
     static RequestSpecification reguest = null;
     static ResponseSpecification success = null;
 
@@ -41,7 +40,6 @@ public class PostmanEchoRequestMethods {
                 .setBaseUri(baseProtocol + "://" + hostData)
                 .addHeaders(headersMap)
                 .build();
-
         success = expect()
                 .statusCode(HttpStatus.SC_OK)
                 .body(
@@ -60,10 +58,8 @@ public class PostmanEchoRequestMethods {
     public void GETRequest() {
         String basePathData = "/get";
         Map<String, String> quetyParamsMap = new HashMap<>();
-
         quetyParamsMap.put("foo1", "bar1");
         quetyParamsMap.put("foo2", "bar2");
-
 
         given()
                 .spec(reguest)
@@ -83,40 +79,13 @@ public class PostmanEchoRequestMethods {
     }
 
     @Test
-    public void POSTRawText() {
-        String basePathData = "/post";
-        String bodyTextRaw = "This is expected to be sent back as part of response body.";
-        String contentType = "text/plain; charset=ISO-8859-1";
-        given()
-                .spec(reguest)
-                .header("Content-Type", contentType)
-                .body(bodyTextRaw)
-                .when()
-                .post(basePathData)
-                .then()
-                .log().body()
-                .spec(success)
-                .and()
-                .body(
-                        "args", equalTo(Collections.emptyMap()),
-                        "files", equalTo(Collections.emptyMap()),
-                        "form", equalTo(Collections.emptyMap()),
-                        "json", nullValue(),
-                        "data", equalTo(bodyTextRaw),
-                        "url", equalTo(baseProtocol + "://" +
-                                headersMap.get("Host") + basePathData)
-                        , "headers.content-type", equalTo(contentType)
-                        , "headers.content-length", equalTo(String.valueOf(bodyTextRaw.length()))
-                );
-    }
-
-    @Test
     public void POSTFormData() {
         String basePathData = "/post";
         String contentType = "application/x-www-form-urlencoded; charset=UTF-8";
         Map<String, String> formParamsMap = new HashMap<>();
         formParamsMap.put("foo1", "bar1");
         formParamsMap.put("foo2", "bar2");
+
         given()
                 .spec(reguest)
                 .formParams(formParamsMap)
@@ -130,14 +99,11 @@ public class PostmanEchoRequestMethods {
                 .body(
                         "args", equalTo(Collections.emptyMap()),
                         "files", equalTo(Collections.emptyMap()),
-
                         "form.foo1", equalTo(formParamsMap.get("foo1")),
                         "form.foo2", equalTo(formParamsMap.get("foo2")),
                         "json.foo1", equalTo(formParamsMap.get("foo1")),
                         "json.foo2", equalTo(formParamsMap.get("foo2")),
-
                         "data", equalTo(""),
-
                         "url", equalTo(baseProtocol + "://" +
                                 headersMap.get("Host") + basePathData)
                         , "headers.content-type", equalTo(contentType)
@@ -146,16 +112,55 @@ public class PostmanEchoRequestMethods {
     }
 
     @Test
-    public void PUTRequest() {
-        String basePathData = "/put";
+    public void POSTRawText() {
+        String basePathData = "post";
         String bodyTextRaw = "This is expected to be sent back as part of response body.";
+
+        testRequest(basePathData, bodyTextRaw);
+    }
+
+    @Test
+    public void PUTRequest() {
+        String basePathData = "put";
+        String bodyTextRaw = "This is expected to be sent back as part of response body.";
+
+        testRequest(basePathData, bodyTextRaw);
+    }
+
+    @Test
+    public void PATCHRequest() {
+        String basePathData = "patch";
+        String bodyTextRaw = "This is expected to be sent back as part of response body.";
+
+        testRequest(basePathData, bodyTextRaw);
+    }
+
+    @Test
+    public void DELETERequest() {
+        String basePathData = "delete";
+        String bodyTextRaw = "This is expected to be sent back as part of response body.";
+
+        testRequest(basePathData, bodyTextRaw);
+    }
+
+    public static int getFormBodyLengthBytes(Map<String, String> params) {
+        String body = params.entrySet().stream()
+                .map(e -> URLEncoder.encode(e.getKey(), StandardCharsets.UTF_8) + "=" +
+                        URLEncoder.encode(e.getValue(), StandardCharsets.UTF_8))
+                .collect(Collectors.joining("&"));
+        return body.getBytes(StandardCharsets.UTF_8).length;
+    }
+
+    public void testRequest(String basePath, String bodyTextRaw) {
+        String basePathData = "/" + basePath;
         String contentType = "text/plain; charset=UTF-8";
+
         given()
                 .spec(reguest)
                 .header("Content-Type", contentType)
                 .body(bodyTextRaw)
                 .when()
-                .put(basePathData)
+                .request(basePath, basePathData)
                 .then()
                 .log().body()
                 .spec(success)
@@ -171,13 +176,5 @@ public class PostmanEchoRequestMethods {
                         , "headers.content-type", equalTo(contentType)
                         , "headers.content-length", equalTo(String.valueOf(bodyTextRaw.length()))
                 );
-    }
-
-    public static int getFormBodyLengthBytes(Map<String, String> params) {
-        String body = params.entrySet().stream()
-                .map(e -> URLEncoder.encode(e.getKey(), StandardCharsets.UTF_8) + "=" +
-                        URLEncoder.encode(e.getValue(), StandardCharsets.UTF_8))
-                .collect(Collectors.joining("&"));
-        return body.getBytes(StandardCharsets.UTF_8).length;
     }
 }
