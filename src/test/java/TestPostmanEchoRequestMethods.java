@@ -67,7 +67,6 @@ public class TestPostmanEchoRequestMethods {
                 .when()
                 .get(basePathData)
                 .then()
-                .log().body()
                 .spec(success)
                 .and()
                 .body("args.foo1", equalTo(quetyParamsMap.get("foo1")),
@@ -93,7 +92,6 @@ public class TestPostmanEchoRequestMethods {
                 .when()
                 .post(basePathData)
                 .then()
-                .log().body()
                 .spec(success)
                 .and()
                 .body(
@@ -162,7 +160,6 @@ public class TestPostmanEchoRequestMethods {
                 .when()
                 .request(basePath, basePathData)
                 .then()
-                .log().body()
                 .spec(success)
                 .and()
                 .body(
