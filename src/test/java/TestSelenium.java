@@ -1,5 +1,7 @@
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -12,7 +14,8 @@ import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class Selenium {
+public class TestSelenium {
+
     static WebDriver driver;
     static String url = "https://www.mts.by/";
     WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
@@ -26,11 +29,10 @@ public class Selenium {
 
     @BeforeEach
     void setup() {
-            if(!Objects.equals(driver.getCurrentUrl(), url)) {
-                driver.get(url);
-                cookieOk();
-            }
-
+        if (!Objects.equals(driver.getCurrentUrl(), url)) {
+            driver.get(url);
+            cookieOk();
+        }
     }
 
     @AfterAll
@@ -46,20 +48,17 @@ public class Selenium {
         if (driver != null) {
             String expected = "Онлайн пополнение\n" +
                     "без комиссии";
-            String text = driver.findElement(By.xpath("//*[@id='pay-section']/div/div/div[2]/section/div/h2")).getText();
+            String text = driver.findElement(By.xpath("//*[@id='pay-section']//section//h2")).getText();
             assertEquals(expected, text);
         }
     }
 
     @DisplayName("Наличие логотипов платёжных систем")
-    @Test
-    public void testLogoPaySystems() {
+    @ParameterizedTest
+    @CsvSource({"Visa", "Verified By Visa", "MasterCard", "MasterCard Secure Code", "Белкарт"})
+    public void testLogoPaySystems(String logoName) {
         if (driver != null) {
-            assertFalse(driver.findElements(By.xpath("//img[@alt='Visa']")).isEmpty());
-            assertFalse(driver.findElements(By.xpath("//img[@alt='Verified By Visa']")).isEmpty());
-            assertFalse(driver.findElements(By.xpath("//img[@alt='MasterCard']")).isEmpty());
-            assertFalse(driver.findElements(By.xpath("//img[@alt='MasterCard Secure Code']")).isEmpty());
-            assertFalse(driver.findElements(By.xpath("//img[@alt='Белкарт']")).isEmpty());
+            assertFalse(driver.findElements(By.xpath("//img[@alt='" + logoName + "']")).isEmpty());
         }
     }
 
@@ -88,18 +87,14 @@ public class Selenium {
             input.sendKeys(sum);
             WebElement link = driver.findElement(By.xpath("//*[@id='pay-connection']/button"));
             link.click();
-
-
             assertDoesNotThrow(() -> wait.until((d) -> driver.findElement(By.xpath("//iframe[@src='https://checkout.bepaid.by/widget_v2/index.html']"))));
         }
     }
 
     public static void cookieOk() {
         List<WebElement> link = driver.findElements(By.xpath("//*[@id='cookie-agree']"));
-        if (!link.isEmpty()&&link.get(0).isDisplayed()) {
+        if (!link.isEmpty() && link.get(0).isDisplayed()) {
             link.get(0).click();
         }
     }
-
-
 }
